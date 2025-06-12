@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dia dos Namorados - Carrossel de Fotos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    /* Reset and base */
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #fe3f75 0%, #910737 50%, #aa2647 100%);
+      color: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Container */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 32px 16px 64px;
+      flex: 1 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+
+    header {
+      text-align: center;
+      padding-bottom: 16px;
+      border-bottom: 2px solid rgba(255 255 255 / 0.4);
+    }
+
+    header h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: #fff1f4;
+      text-shadow: 2px 2px 6px rgba(226, 112, 137, 0.7);
+    }
+
+    header p {
+      font-size: 1.1rem;
+      color: #ffe3e8;
+      margin-top: 8px;
+      font-style: italic;
+    }
+
+    /* Carousel */
+    .carousel {
+      position: relative;
+      width: 100%;
+      max-width: 900px;
+      height: 520px;
+      border-radius: 20px;
+      box-shadow: 0 16px 32px rgba(255, 110, 131, 0.3);
+      overflow: hidden;
+      background: #fff0f3;
+      user-select: none;
+      padding: 0; /* removed any padding */
+    }
+
+    .carousel-images {
+      display: flex;
+      height: 100%;
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: transform;
+      margin: 0; /* remove possible margin */
+      padding: 0; /* remove possible padding */
+    }
+
+    .carousel-image {
+      flex: 0 0 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 20px;
+      pointer-events: none;
+      max-width: 100%;
+      display: block;
+    }
+
+    /* Carousel Controls */
+    .carousel-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(207, 47, 212, 0.11);
+      border: none;
+      color: white;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+      z-index: 10;
+    }
+
+    .carousel-button:hover,
+    .carousel-button:focus {
+      background: rgb(133, 12, 42);
+      outline: none;
+    }
+
+    .carousel-button:active {
+      transform: translateY(-50%) scale(0.9);
+    }
+
+    .carousel-button.prev {
+      left: 16px;
+    }
+
+    .carousel-button.next {
+      right: 16px;
+    }
+
+    /* Button SVG Icon */
+    .carousel-button svg {
+      width: 24px;
+      height: 24px;
+      fill: white;
+    }
+
+    /* Dedication section */
+    .dedication {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 16px;
+      padding: 24px 32px;
+      box-shadow: 0 8px 24px rgba(255, 110, 131, 0.3);
+      color: #ffffff;
+      font-size: 1.2rem;
+      line-height: 1.6;
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+      user-select: text;
+      white-space: pre-wrap;
+    }
+
+    /* Date section */
+    .date-info {
+      text-align: center;
+      color: #fff4f7;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.7);
+      user-select: none;
+      margin-top: 10px;
+    }
+
+    /* Important dates list */
+    .important-dates {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 24px 32px;
+      background: rgba(255, 255, 255, 0.25);
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(255, 110, 131, 0.25);
+      color: #e2d4d7;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      user-select: none;
+      display: flex;
+      justify-content: space-around;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .important-dates h2 {
+      margin-top: 0;
+      margin-bottom: 16px;
+      font-weight: 700;
+      color: #ffffff;
+      text-align: center;
+      text-shadow: 1px 1px 2px rgb(0, 0, 0);
+      width: 100%;
+    }
+
+    .important-dates ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      width: 100%;
+    }
+
+    .important-dates li {
+      padding: 8px 12px;
+      border-radius: 8px;
+      background-color: rgba(255, 110, 132, 0.767);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 160px;
+      box-shadow: 0 4px 10px rgba(255, 255, 255, 0.15);
+      transition: background-color 0.3s ease;
+      cursor: default;
+      user-select: text;
+      margin: 6px;
+    }
+
+    .important-dates li:hover {
+      background-color: rgba(255, 110, 131, 0.15);
+    }
+
+    .date-label {
+      font-weight: 700;
+      color: #e7e7e7;
+      text-align: center;
+     text-shadow: 1px 1px 2px rgb(0, 0, 0);
+      margin-bottom: 6px;
+      font-size: 1.15rem;
+    }
+
+    .date-value {
+      color: #641127;
+      font-size: 1rem;
+       text-shadow: 1px 1px 2px rgb(0, 0, 0);
+      text-align: center;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .carousel {
+        height: 300px;
+      }
+
+      header h1 {
+        font-size: 2rem;
+      }
+
+      .dedication {
+        font-size: 1rem;
+        padding: 16px 20px;
+      }
+
+      .important-dates ul {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .important-dates li {
+        width: 100%;
+        margin: 4px 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1>Feliz Dia dos Namorados Meu Amor</h1>
+      <p>Nossos momentos juntas:</p>
+    </header>
+    <section class="carousel" aria-label="Carrossel de fotos do Dia dos Namorados">
+      <div class="carousel-images">
+        <img src="img/foto 4.jpg"
+          alt="" class="carousel-image" />
+        <img src="img/foto 2.jpg"
+          alt="" class="carousel-image" />
+        <img src="img/foto 3.jpg"
+          alt="" class="carousel-image" />
+        <img src="img/foto 1.jpg"
+          alt="" class="carousel-image" />
+        </div>
+      <button class="carousel-button prev" aria-label="Foto anterior">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+        </svg>
+      </button>
+      <button class="carousel-button next" aria-label="Próxima foto">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" />
+        </svg>
+      </button>
+    </section>
+    <section class="dedication" aria-label="Dedicação especial">
+      Oii Amor, é muito bom saber que vou passar o dia dos namorados com a garota que eu amo, sabe parece que foi ontem que a gente se beijou pela primeira vez, interessante o fato de eu te amar tanto e saber que vc me ama também, você me alegrou minha vida de uma forma e mudou ela pra melhor, obrigada por ser minha namorada e por me aguentar tanto, Feliz día de San Valentín Mi amor!.
+    </section>
+    <div class="date-info" aria-label="Data do dia dos namorados">
+      12 de Junho - Dia dos Namorados
+    </div>
+    <section class="important-dates" aria-label="Datas importantes do casal">
+      <h2>Datas Importantes</h2>
+      <ul>
+        <li>
+          <span class="date-label">Primeiro Beijo</span>
+          <span class="date-value">19 de Agosto, 2023</span>
+        </li>
+        <li>
+          <span class="date-label">Namoro</span>
+          <span class="date-value">15 de Novembro, 2024</span>
+        </li>
+        <li>
+          <span class="date-label">Casamento</span>
+          <span class="date-value">Em breve...</span>
+        </li>
+      </ul>
+    </section>
+  </div>
+  <script>
+    (function() {
+      const carousel = document.querySelector('.carousel');
+      const imagesContainer = carousel.querySelector('.carousel-images');
+      const images = carousel.querySelectorAll('.carousel-image');
+      const prevBtn = carousel.querySelector('.carousel-button.prev');
+      const nextBtn = carousel.querySelector('.carousel-button.next');
+      let currentIndex = 0;
+      const totalImages = images.length;
+
+      function updateCarousel() {
+        imagesContainer.style.transform = `translateX(-${currentIndex * 100}%)`;
+      }
+
+      prevBtn.addEventListener('click', () => {
+        currentIndex = (currentIndex - 1 + totalImages) % totalImages;
+        updateCarousel();
+      });
+
+      nextBtn.addEventListener('click', () => {
+        currentIndex = (currentIndex + 1) % totalImages;
+        updateCarousel();
+      });
+
+      // Optional: Swipe support for touch devices
+      let startX = 0;
+      let isDragging = false;
+
+      imagesContainer.addEventListener('touchstart', e => {
+        startX = e.touches[0].clientX;
+        isDragging = true;
+      });
+
+      imagesContainer.addEventListener('touchmove', e => {
+        if (!isDragging) return;
+        let currentX = e.touches[0].clientX;
+        let diffX = currentX - startX;
+      });
+
+      imagesContainer.addEventListener('touchend', e => {
+        if (!isDragging) return;
+        let endX = e.changedTouches[0].clientX;
+        let diffX = endX - startX;
+        const swipeThreshold = 40; // px
+        if (diffX > swipeThreshold) {
+          // Swipe right
+          currentIndex = (currentIndex - 1 + totalImages) % totalImages;
+          updateCarousel();
+        } else if (diffX < -swipeThreshold) {
+          // Swipe left
+          currentIndex = (currentIndex + 1) % totalImages;
+          updateCarousel();
+        }
+        isDragging = false;
+      });
+
+      updateCarousel();
+    })();
+  </script>
+</body>
+
+</html>
